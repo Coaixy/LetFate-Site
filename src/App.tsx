@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -7,6 +7,7 @@ import './components/LoadingAnimation.css';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const featuresRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     console.log('App mounted');
@@ -29,6 +30,19 @@ function App() {
       ease: "power2.out"
     });
 
+    // 添加鼠标滚轮事件处理
+    const handleWheel = (e: WheelEvent) => {
+      if (featuresRef.current) {
+        e.preventDefault();
+        featuresRef.current.scrollLeft += e.deltaY;
+      }
+    };
+
+    const featuresElement = featuresRef.current;
+    if (featuresElement) {
+      featuresElement.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
     // 模拟加载完成
     const timer = setTimeout(() => {
       console.log('Loading completed');
@@ -39,6 +53,9 @@ function App() {
       console.log('App unmounted');
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
       clearTimeout(timer);
+      if (featuresElement) {
+        featuresElement.removeEventListener('wheel', handleWheel);
+      }
     };
   }, []);
 
@@ -69,7 +86,7 @@ function App() {
           </div>
 
           <div className="features-container">
-            <div className="features">
+            <div className="features" ref={featuresRef}>
               <div className="feature-card">
                 <h3>六爻占卜</h3>
                 <p>以六爻变化，洞察天机</p>
@@ -95,7 +112,7 @@ function App() {
                 <p>风水布局，趋吉避凶</p>
               </div>
             </div>
-            <div className="scroll-hint">← 滑动查看更多 →</div>
+            
           </div>
 
           <div className="coming-soon-section">
