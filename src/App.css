@@ -1,0 +1,344 @@
+:root {
+  --ink-color: rgba(0, 0, 0, 0.8);
+  --ink-light: rgba(0, 0, 0, 0.6);
+  --ink-lighter: rgba(0, 0, 0, 0.4);
+  --paper-color: #f8f8f8;
+  --paper-texture: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="%23e0e0e0" stroke-width="0.5"/></svg>');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Ma Shan Zheng', 'STKaiti', serif;
+  background-color: var(--paper-color);
+  color: var(--ink-color);
+  overflow-x: hidden;
+}
+
+.app-container {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: var(--paper-color);
+}
+
+/* 水墨背景 */
+.ink-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ink-drop {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, var(--ink-color) 0%, transparent 70%);
+  opacity: 0.1;
+  filter: blur(20px);
+}
+
+.ink-drop-1 {
+  width: 600px;
+  height: 600px;
+  top: -100px;
+  left: -100px;
+}
+
+.ink-drop-2 {
+  width: 400px;
+  height: 400px;
+  bottom: -50px;
+  right: -50px;
+}
+
+.ink-drop-3 {
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 主要内容 */
+.main-content {
+  position: relative;
+  z-index: 1;
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 标题样式 */
+.title-container {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5rem;
+}
+
+.title-char {
+  display: inline-block;
+  position: relative;
+}
+
+.title-char::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--ink-color);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.title-char:hover::after {
+  transform: scaleX(1);
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: var(--ink-light);
+  margin-top: 1rem;
+}
+
+/* 特性卡片 */
+.features {
+  display: flex;
+  overflow-x: auto;
+  gap: 2rem;
+  margin: 4rem 0;
+  padding: 1rem;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scroll-behavior: smooth;
+}
+
+.features::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.feature-card {
+  flex: 0 0 300px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2.5rem 2rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--ink-color);
+  position: relative;
+  display: inline-block;
+}
+
+.feature-card h3::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--ink-color);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover h3::after {
+  transform: scaleX(1);
+}
+
+.feature-card p {
+  color: var(--ink-light);
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+/* 添加滑动提示 */
+.features-container {
+  position: relative;
+  margin: 4rem 0;
+}
+
+.scroll-hint {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-light);
+  font-size: 1.2rem;
+  animation: bounce 2s infinite;
+  pointer-events: none;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(-50%);
+  }
+  40% {
+    transform: translateY(-60%);
+  }
+  60% {
+    transform: translateY(-40%);
+  }
+}
+
+/* 倒计时部分 */
+.countdown-section {
+  text-align: center;
+  margin-top: 4rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--ink-color);
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.countdown-item .number {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--ink-color);
+}
+
+.countdown-item .label {
+  font-size: 1.2rem;
+  color: var(--ink-light);
+}
+
+/* 预约按钮 */
+.subscribe-btn {
+  background: var(--ink-color);
+  color: white;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Ma Shan Zheng', 'STKaiti', serif;
+}
+
+.subscribe-btn:hover {
+  background: var(--ink-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 敬请期待部分 */
+.coming-soon-section {
+  text-align: center;
+  margin-top: 4rem;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.coming-soon-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--ink-color);
+}
+
+.coming-soon-text {
+  font-size: 1.2rem;
+  color: var(--ink-light);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .title {
+    font-size: 3rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+  }
+
+  .countdown {
+    gap: 1rem;
+  }
+
+  .countdown-item .number {
+    font-size: 2rem;
+  }
+
+  .countdown-item .label {
+    font-size: 1rem;
+  }
+
+  .feature-card {
+    flex: 0 0 250px;
+    padding: 2rem 1.5rem;
+    min-height: 180px;
+  }
+
+  .feature-card h3 {
+    font-size: 1.8rem;
+  }
+
+  .feature-card p {
+    font-size: 1.1rem;
+  }
+
+  .scroll-hint {
+    display: none;
+  }
+
+  .coming-soon-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .coming-soon-section h2 {
+    font-size: 2rem;
+  }
+}
